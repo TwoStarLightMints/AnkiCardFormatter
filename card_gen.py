@@ -38,7 +38,7 @@ class CardGenerator:
     
     def parse_content(self, content: str):
         results: list[str] = list()
-        
+
         no_grammar, grammar, ind = self.find_chunk(content)
 
         if no_grammar != "":
