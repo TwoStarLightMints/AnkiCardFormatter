@@ -1,2 +1,5 @@
 # Ignore pycache
 __pycache__/
+
+# Ignore test.txt specifically
+test.txt
