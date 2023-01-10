@@ -13,30 +13,41 @@ from enum import Enum
 #   Unformatted
 #   Grammar Indicator
 
-class TextType (Enum):
-    fem = 0,
-    masc = 1,
-    neut = 2,
-    nom = 3,
-    acc = 4,
-    dat = 5,
-    gen = 6,
+# Valid Grammar Indicators
+#   nom
+#   acc
+#   dat
+#   gen
+#   masc
+#   fem
+#   neut
 
+test_str1 = "-You-<nom> have seen -the first person-<acc>"
+test_str2 = "-I-<nom> want to see -you-<acc> on tuesday. -You-<nom> do not want to see -me-<acc>."
 
-test_str1 = "-You-<nominative> have seen -the first person-<accusative>"
-test_str2 = "-I-<nominative> want to see -you-<accusative> on tuesday. -You-<nominative> do not want to see -me-<accusative>."
+full_test = f"{test_str1}|{test_str2}"
 
 class CardGenerator:
-    def __init__(self, content: str="Example Front|Example Back"):
-        # contents: list[str] = self.split_into_sides(content)
-        pass
+    def __init__(self, path):
+        self.to_process = self.read_from_origin(path)
+        self.processed = list()
+
+        for line in self.to_process:
+            contents: list[str] = self.split_into_sides(line)
+            
+            for content in contents:
+                self.processed.append(self.process_card_content(content))
+        
+        self.write_to_dest(path, self.processed)
 
     def split_into_sides(self, combined: str):
         contents: list[str] = combined.split("|")
         front: str = contents[0]
         back: str = contents[1]
+        
+        return [self.process_card_content(front), self.process_card_content(back)]
 
-    def parse_content(self, content: str):
+    def parse_content(self, content: str) -> list[str, tuple[str]]:
         results: list[str] = list()
 
         no_grammar, grammar, ind = self.find_chunk(content)
@@ -70,6 +81,44 @@ class CardGenerator:
 
         return [content[start_ind:ind1], (content[ind1+1:ind2], content[g_ind1+1:g_ind2]), g_ind2+1] # The plus one in the first part of the slice is to remove the delimiting marker from the resulting chunk
 
+    def encode_content(self, parsed_list: list) -> str:
+        result = ""
+
+        for item in parsed_list:
+            if type(item) == str:
+                result += item
+            else:
+                if item[1] == "nom":
+                    result += f'<spam style="text-decoration: underline; text-decoration-color: green">{item[0]}</spam>'
+                if item[1] == "acc":
+                    result += f'<spam style="text-decoration: underline; text-decoration-color: red">{item[0]}</spam>'
+                if item[1] == "dat":
+                    result += f'<spam style="text-decoration: underline; text-decoration-color: blue">{item[0]}</spam>'
+                if item[1] == "gen":
+                    result += f'<spam style="text-decoration: underline; text-decoration-color: orange">{item[0]}</spam>'
+                if item[1] == "masc":
+                    result += f'<spam style="color: blue">{item[0]}</spam>'
+                if item[1] == "fem":
+                    result += f'<spam style="color: red">{item[0]}</spam>'
+                if item[1] == "neut":
+                    result += f'<spam style="color: green">{item[0]}</spam>'
+        
+        return result
+
+    def process_card_content(self, content: str) -> str:
+        return self.encode_content(self.parse_content(content))
+
+    def read_from_origin(self, path: str) -> list[str]:
+        lines = list()
+
+        with open(path, "r") as origin:
+            lines = origin.readlines()
+        
+        return lines
+
+    def write_to_dest(self, path: str, contents: str):
+        with open(path, "w") as dest:
+            dest.writelines(contents)
+
 if __name__ == "__main__":
-    gen = CardGenerator()
-    print(gen.parse_content(test_str2))
+    gen = CardGenerator(full_test)
