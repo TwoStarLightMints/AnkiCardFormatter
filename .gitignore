@@ -2,4 +2,4 @@
 __pycache__/
 
 # Ignore test.txt specifically
-test.txt
+*.txt
