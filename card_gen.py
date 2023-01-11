@@ -120,5 +120,7 @@ class CardGenerator:
             for content in contents:
                 dest.write(content)
 
+from sys import argv
+
 if __name__ == "__main__":
-    gen = CardGenerator("test.txt")
+    gen = CardGenerator(f"{argv[1]}.txt")
