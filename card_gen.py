@@ -2,7 +2,7 @@ from enum import Enum
 
 # Class should be given a front and back plain text as to be able to create proper cards
 
-# Delimiting character is |
+# Delimiting character is \t
 
 # Front:
 #   {Front content}
@@ -22,10 +22,7 @@ from enum import Enum
 #   fem
 #   neut
 
-test_str1 = "-You-<nom> have seen -the first person-<acc>"
-test_str2 = "-I-<nom> want to see -you-<acc> on tuesday. -You-<nom> do not want to see -me-<acc>."
 
-full_test = f"{test_str1}|{test_str2}"
 
 class CardGenerator:
     def __init__(self, path):
@@ -35,12 +32,12 @@ class CardGenerator:
         for line in self.to_process:
             contents: list[str] = self.split_into_sides_and_process(line)
 
-            self.processed.append("|".join(contents))
+            self.processed.append("\t".join(contents))
         
         self.write_to_dest(path, self.processed)
 
     def split_into_sides_and_process(self, combined: str):
-        contents: list[str] = combined.split("|")
+        contents: list[str] = combined.split("\t")
         front: str = contents[0]
         back: str = contents[1]
         
