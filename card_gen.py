@@ -56,7 +56,6 @@ class CardGenerator:
         results.append(grammar)
 
         while ind != -1:
-            print(ind)
             n_g, g, ind = self.find_chunk(content, ind)
 
             if n_g != "":
