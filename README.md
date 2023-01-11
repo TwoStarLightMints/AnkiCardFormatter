@@ -10,3 +10,7 @@ Utility to create Anki cards with my personal needs in mind (German)
 - masc (Masculine)
 - fem (Feminine)
 - neut (Neuter)
+
+## Usage Syntax
+-text content to be grammatically marked-\<grammatical information here\> unmarked text here
+unmarked text here -text content to be grammatically marked-\<grammatical information here\>
