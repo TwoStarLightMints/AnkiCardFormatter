@@ -33,14 +33,13 @@ class CardGenerator:
         self.processed = list()
 
         for line in self.to_process:
-            contents: list[str] = self.split_into_sides(line)
-            
-            for content in contents:
-                self.processed.append(self.process_card_content(content))
+            contents: list[str] = self.split_into_sides_and_process(line)
+
+            self.processed.append("|".join(contents))
         
         self.write_to_dest(path, self.processed)
 
-    def split_into_sides(self, combined: str):
+    def split_into_sides_and_process(self, combined: str):
         contents: list[str] = combined.split("|")
         front: str = contents[0]
         back: str = contents[1]
@@ -118,7 +117,8 @@ class CardGenerator:
 
     def write_to_dest(self, path: str, contents: str):
         with open(path, "w") as dest:
-            dest.writelines(contents)
+            for content in contents:
+                dest.write(content)
 
 if __name__ == "__main__":
-    gen = CardGenerator(full_test)
+    gen = CardGenerator("test.txt")
