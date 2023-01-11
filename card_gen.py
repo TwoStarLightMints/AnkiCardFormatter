@@ -1,5 +1,3 @@
-from enum import Enum
-
 # Class should be given a front and back plain text as to be able to create proper cards
 
 # Delimiting character is "\t"
@@ -37,7 +35,9 @@ class CardGenerator:
         self.write_to_dest(path, self.processed)
 
     def split_into_sides_and_process(self, combined: str):
+        print(combined)
         contents: list[str] = combined.split("\t")
+        print(contents)
         front: str = contents[0]
         back: str = contents[1]
         
