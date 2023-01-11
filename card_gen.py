@@ -2,7 +2,7 @@ from enum import Enum
 
 # Class should be given a front and back plain text as to be able to create proper cards
 
-# Delimiting character is \t
+# Delimiting character is "\t"
 
 # Front:
 #   {Front content}
