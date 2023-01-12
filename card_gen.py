@@ -23,8 +23,26 @@
 
 
 class CardGenerator:
-    def __init__(self, path, deck_provided=False):
-        if not deck_provided:
+    def __init__(self, path, deck_provided=False, options_included=False):
+        if deck_provided:
+            self.to_process = self.read_from_origin(path)
+            self.processed = list()
+
+            for line in self.to_process:
+                contents: list[str] = self.split_into_sides_and_process_decks(line)
+                self.processed.append("\t".join(contents))
+        elif options_included:
+            self.to_process = self.read_from_origin(path)
+            self.processed = list()
+
+            self.opts = [line.rstrip("\n") for line in self.to_process if "#" in line]
+
+            for line in self.to_process[len(self.opts):len(self.to_process)]:
+                contents: list[str] = self.split_into_sides_and_process(line)
+                self.processed.append("\t".join(contents))
+            
+            self.opts_included_processed = [*self.opts, *self.processed]
+        else:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
 
@@ -32,8 +50,6 @@ class CardGenerator:
                 contents: list[str] = self.split_into_sides_and_process(line)
 
                 self.processed.append("\t".join(contents))
-        else:
-            self.to_process = self.read_from_origin(path)
 
     def split_into_sides_and_process(self, combined: str):
         contents: list[str] = combined.split("\t")
@@ -41,6 +57,13 @@ class CardGenerator:
         back: str = contents[1]
         
         return [self.process_card_content(front), self.process_card_content(back)]
+
+    def split_into_sides_and_process_decks(self, combined_w_deck: str):
+        contents: list[str] = combined_w_deck.split("\t")
+        front = contents[1]
+        back = contents[2]
+
+        return [contents[0], self.process_card_content(front), self.process_card_content[back]]
 
     def parse_content(self, content: str) -> list[str | tuple[str, str]]:
         results: list[str | tuple[str, str]] = list()
@@ -123,4 +146,4 @@ class CardGenerator:
 from sys import argv
 
 if __name__ == "__main__":
-    gen = CardGenerator(f"{argv[1]}.txt")
+    gen = CardGenerator(f"{argv[1]}.txt", options_included=True)
