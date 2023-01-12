@@ -113,7 +113,7 @@ class CardGenerator:
         return lines
 
     def write_to_dest(self, path: str, contents: str):
-        with open(path, "w") as dest:
+        with open(path, "w", encoding="utf-8") as dest:
             for content in contents:
                 dest.write(content)
 
