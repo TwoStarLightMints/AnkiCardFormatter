@@ -7,3 +7,6 @@ class Engine:
         self.writer = AnkiTxtWriter(self.generator.processed, separator, html, deck_column, tags_column, deck)
 
         self.writer.create_anki_txt_file(separator, html, deck_column, tags_column, deck)
+
+if __name__ == "__main__":
+    eng = Engine("anki.txt")
