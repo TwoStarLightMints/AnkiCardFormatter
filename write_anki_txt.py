@@ -24,7 +24,7 @@ class AnkiTxtWriter:
         else:
             file = f"{file_name}.{file_ext}"
         
-        with open(file, "w") as anki:
+        with open(file, "w", encoding="utf-8") as anki:
             anki.write(f"#separator:{sep}\n")
             anki.write(f"#html:{html}\n")
             anki.write(f"#deck column:{deck_col}\n")

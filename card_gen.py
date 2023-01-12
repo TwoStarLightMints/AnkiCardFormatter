@@ -107,7 +107,7 @@ class CardGenerator:
     def read_from_origin(self, path: str) -> list[str]:
         lines = list()
 
-        with open(path, "r") as origin:
+        with open(path, "r", encoding="utf-8") as origin:
             lines = origin.readlines()
         
         return lines
