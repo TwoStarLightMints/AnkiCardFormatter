@@ -3,3 +3,6 @@ __pycache__/
 
 # Ignore test.txt specifically
 *.txt
+
+# Ignore Anki backup files
+*.colpkg
