@@ -41,8 +41,8 @@ class CardGenerator:
         
         return [self.process_card_content(front), self.process_card_content(back)]
 
-    def parse_content(self, content: str) -> list[str, tuple[str]]:
-        results: list[str] = list()
+    def parse_content(self, content: str) -> list[str | tuple[str, str]]:
+        results: list[str | tuple[str, str]] = list()
 
         no_grammar, grammar, ind = self.find_chunk(content)
 
@@ -60,7 +60,7 @@ class CardGenerator:
 
         return results
 
-    def find_chunk(self, content: str, start_ind=0) -> list[str, tuple[str], int]:
+    def find_chunk(self, content: str, start_ind=0) -> list[str | tuple[str, str] | int]:
         # Find the content that is marked for gramaticalization
         ind1 = content.find("-", start_ind)
 
