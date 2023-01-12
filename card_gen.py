@@ -31,6 +31,7 @@ class CardGenerator:
             for line in self.to_process:
                 contents: list[str] = self.split_into_sides_and_process_decks(line)
                 self.processed.append("\t".join(contents))
+
         elif options_included:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
@@ -42,6 +43,19 @@ class CardGenerator:
                 self.processed.append("\t".join(contents))
             
             self.opts_included_processed = [*self.opts, *self.processed]
+
+        elif deck_provided and options_included:
+            self.to_process = self.read_from_origin(path)
+            self.processed = list()
+
+            self.opts = [line.rstrip("\n") for line in self.to_process if "#" in line]
+
+            for line in self.to_process[len(self.opts):len(self.to_process)]:
+                contents: list[str] = self.split_into_sides_and_process_decks(line)
+                self.processed.append("\t".join(contents))
+            
+            self.opts_included_processed = [*self.opts, *self.processed]
+
         else:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
