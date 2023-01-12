@@ -33,9 +33,7 @@ class CardGenerator:
             self.processed.append("\t".join(contents))
 
     def split_into_sides_and_process(self, combined: str):
-        print(combined)
         contents: list[str] = combined.split("\t")
-        print(contents)
         front: str = contents[0]
         back: str = contents[1]
         
@@ -69,10 +67,15 @@ class CardGenerator:
 
         ind2 = content.find("-", ind1 + 1)
         # Find the grammaticalization rules
-        g_ind1 = content.find("<", ind1)
-        g_ind2 = content.find(">", g_ind1 + 1)
+        g_ind1, g_ind2 = self.find_grammar_info(content, ind1)
 
         return [content[start_ind:ind1], (content[ind1+1:ind2], content[g_ind1+1:g_ind2]), g_ind2+1] # The plus one in the first part of the slice is to remove the delimiting marker from the resulting chunk
+
+    def find_grammar_info(self, content: str, start_ind: int):
+        g_ind1 = content.find("<", start_ind)
+        g_ind2 = content.find(">", g_ind1 + 1)
+
+        return [g_ind1, g_ind2]
 
     def encode_content(self, parsed_list: list) -> str:
         result = ""
@@ -82,19 +85,19 @@ class CardGenerator:
                 result += item
             else:
                 if item[1] == "nom":
-                    result += f'<spam style="text-decoration: underline; text-decoration-color: green">{item[0]}</spam>'
+                    result += f'<span style="text-decoration: underline; text-decoration-color: green">{item[0]}</span>'
                 if item[1] == "acc":
-                    result += f'<spam style="text-decoration: underline; text-decoration-color: red">{item[0]}</spam>'
+                    result += f'<span style="text-decoration: underline; text-decoration-color: red">{item[0]}</span>'
                 if item[1] == "dat":
-                    result += f'<spam style="text-decoration: underline; text-decoration-color: blue">{item[0]}</spam>'
+                    result += f'<span style="text-decoration: underline; text-decoration-color: blue">{item[0]}</span>'
                 if item[1] == "gen":
-                    result += f'<spam style="text-decoration: underline; text-decoration-color: orange">{item[0]}</spam>'
+                    result += f'<span style="text-decoration: underline; text-decoration-color: orange">{item[0]}</span>'
                 if item[1] == "masc":
-                    result += f'<spam style="color: blue">{item[0]}</spam>'
+                    result += f'<span style="color: blue">{item[0]}</span>'
                 if item[1] == "fem":
-                    result += f'<spam style="color: red">{item[0]}</spam>'
+                    result += f'<span style="color: red">{item[0]}</span>'
                 if item[1] == "neut":
-                    result += f'<spam style="color: green">{item[0]}</spam>'
+                    result += f'<span style="color: green">{item[0]}</span>'
         
         return result
 
