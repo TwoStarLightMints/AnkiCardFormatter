@@ -28,21 +28,20 @@ class CardGenerator:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
 
-            self.opts = [line.rstrip("\n") for line in self.to_process if "#" in line]
+            self.opts = [line for line in self.to_process if "#" in line]
 
             for line in self.to_process[len(self.opts):len(self.to_process)]:
-                print(f"Processing line: {line}")
                 contents: list[str] = self.split_into_sides_and_process_decks(line)
                 self.processed.append("\t".join(contents))
             
             self.opts_included_processed = [*self.opts, *self.processed]
+            print(self.processed[0])
 
         elif deck_provided:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
 
             for line in self.to_process:
-                print(f"Processing line: {line}")
                 contents: list[str] = self.split_into_sides_and_process_decks(line)
                 self.processed.append("\t".join(contents))
 
@@ -50,10 +49,9 @@ class CardGenerator:
             self.to_process = self.read_from_origin(path)
             self.processed = list()
 
-            self.opts = [line.rstrip("\n") for line in self.to_process if "#" in line]
+            self.opts = [line for line in self.to_process if "#" in line]
 
             for line in self.to_process[len(self.opts):len(self.to_process)]:
-                print(f"Processing line: {line}")
                 contents: list[str] = self.split_into_sides_and_process(line)
                 self.processed.append("\t".join(contents))
             
@@ -64,10 +62,14 @@ class CardGenerator:
             self.processed = list()
 
             for line in self.to_process:
-                print(f"Processing line: {line}")
                 contents: list[str] = self.split_into_sides_and_process(line)
 
                 self.processed.append("\t".join(contents))
+        
+        if options_included:
+            self.write_to_dest("to_import.txt", self.opts_included_processed)
+        else:
+            self.write_to_dest("to_import.txt", self.processed)
 
     def split_into_sides_and_process(self, combined: str):
         contents: list[str] = combined.split("\t")
@@ -159,7 +161,10 @@ class CardGenerator:
     def write_to_dest(self, path: str, contents: str):
         with open(path, "w", encoding="utf-8") as dest:
             for content in contents:
-                dest.write(content)
+                if content in self.opts:
+                    dest.write(content)
+                else:
+                    dest.write(content)
 
 from sys import argv
 
