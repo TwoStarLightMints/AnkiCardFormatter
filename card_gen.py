@@ -31,8 +31,6 @@ class CardGenerator:
             contents: list[str] = self.split_into_sides_and_process(line)
 
             self.processed.append("\t".join(contents))
-        
-        self.write_to_dest(path, self.processed)
 
     def split_into_sides_and_process(self, combined: str):
         print(combined)
