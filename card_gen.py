@@ -23,14 +23,17 @@
 
 
 class CardGenerator:
-    def __init__(self, path):
-        self.to_process = self.read_from_origin(path)
-        self.processed = list()
+    def __init__(self, path, deck_provided=False):
+        if not deck_provided:
+            self.to_process = self.read_from_origin(path)
+            self.processed = list()
 
-        for line in self.to_process:
-            contents: list[str] = self.split_into_sides_and_process(line)
+            for line in self.to_process:
+                contents: list[str] = self.split_into_sides_and_process(line)
 
-            self.processed.append("\t".join(contents))
+                self.processed.append("\t".join(contents))
+        else:
+            self.to_process = self.read_from_origin(path)
 
     def split_into_sides_and_process(self, combined: str):
         contents: list[str] = combined.split("\t")
