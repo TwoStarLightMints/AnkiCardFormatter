@@ -30,3 +30,9 @@ In order to process the text in this file, you will cd to the directory where ca
 $ python card_gen.py <name of txt>
 ```
 When entering the name of the txt file, DO NOT include the extension.
+
+## File Descriptions
+### card_gen.py
+Takes in a text file with marking syntax and converts it into a valid html styled card to be used in write_anki_txt.py.
+### write_anki_txt.py
+Takes in the processed text from card_gen.py and adds the necessary syntax to create a valid importable anki txt file.
